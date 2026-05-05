@@ -27,6 +27,10 @@ onMounted(async() => {
   await movie.allMovies()
 })
 
+function handleGenre() {
+
+}
+
 </script>
 
 <style scoped>

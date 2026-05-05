@@ -2,7 +2,7 @@
   <div class="side-container">
     <h3>Filters</h3>
     <div class="filter-container">
-      <div v-for="genre in genreData" :key="genre.id" class="genres">
+      <div @click="handleGenre(genre.id)" v-for="genre in movie.genreData" :key="genre.id" class="genres">
         <p class="genre">{{genre.label}}</p>
       </div>
     </div>
@@ -10,23 +10,19 @@
 </template>
 
 <script setup>
-import apiCall from "@/services/axios.js";
-import {onMounted, ref} from "vue";
+import {onMounted} from "vue";
+import {useMovieStore} from "@/stores/movieStore.js";
+import {getMoviesByGenre} from "@/apiCall/movieApi.js";
 
-const genreData = ref([])
-const loading = ref(true)
-
-const genreId = ref()
+const movie = useMovieStore()
 
 onMounted(async () => {
-  try {
-    const response = await apiCall.get("/genres")
-    genreData.value = response.data.member
-  } catch (e) {
-    console.error(e.message)
-  }
-  loading.value = false
+  await movie.allGenre()
 })
+
+async function handleGenre(id) {
+  await movie.moviesByGenre(id)
+}
 
 </script>
 
